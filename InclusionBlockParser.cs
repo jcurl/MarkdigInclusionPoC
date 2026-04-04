@@ -1,10 +1,10 @@
-﻿namespace RJCP.MarkDigTest
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+namespace RJCP.MarkDigTest
 {
     using Markdig.Helpers;
     using Markdig.Parsers;
-
-    // Licensed to the .NET Foundation under one or more agreements.
-    // The .NET Foundation licenses this file to you under the MIT license.
 
     public class InclusionBlockParser : BlockParser
     {
@@ -27,7 +27,6 @@
             // [!include[<title>](<filepath>)]
             int column = processor.Column;
             StringSlice line = processor.Line;
-            //string command = line.ToString();
 
             if (!ExtensionsHelper.MatchStart(ref line, StartString, false))
             {
@@ -54,13 +53,14 @@
                 return BlockState.None;
             }
 
-            processor.NewBlocks.Push(new InclusionBlock(this)
+            InclusionBlock incBlock = new(this)
             {
                 Title = title,
                 IncludedFilePath = path,
                 Line = processor.LineIndex,
                 Column = column,
-            });
+            };
+            processor.NewBlocks.Push(incBlock);
 
             return BlockState.BreakDiscard;
         }

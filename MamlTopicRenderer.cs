@@ -34,8 +34,6 @@ namespace RJCP.MarkDigTest
     /// and rendered to a supported output format by a Sandcastle Help File Builder presentation style.</remarks>
     public class MamlTopicRenderer : HtmlRenderer
     {
-        private readonly bool _fragment;
-
         #region Properties
         //=====================================================================
 
@@ -54,7 +52,7 @@ namespace RJCP.MarkDigTest
         /// </summary>
         /// <param name="forPreview">True if rendering for preview, false if for a build</param>
         /// <param name="writer">The text writer to use</param>
-        public MamlTopicRenderer(bool forPreview, TextWriter writer, bool fragment = false) : base(writer)
+        public MamlTopicRenderer(bool forPreview, TextWriter writer) : base(writer)
         {
             // These renders have specific requirements for MAML
             //this.ObjectRenderers.Replace<Markdig.Renderers.Html.ParagraphRenderer>(new ParagraphRenderer());
@@ -66,7 +64,6 @@ namespace RJCP.MarkDigTest
 
             //this.ObjectRenderers.Replace<Markdig.Renderers.Html.CodeBlockRenderer>(new CodeBlockRenderer());
             //this.ObjectRenderers.InsertBefore<Markdig.Renderers.Html.QuoteBlockRenderer>(new AlertBlockRenderer());
-            _fragment = fragment;
         }
         #endregion
 
@@ -90,15 +87,12 @@ namespace RJCP.MarkDigTest
             foreach (var b in frontMatterBlocks)
                 document.Remove(b);
 
-            if (!_fragment)
-            {
-                // We still need the MAML wrapper elements.  The ID and document type don't matter though.
-                this.Writer.WriteLine($@"<?xml version=""1.0"" encoding=""utf-8""?>
+            // We still need the MAML wrapper elements.  The ID and document type don't matter though.
+            this.Writer.WriteLine($@"<?xml version=""1.0"" encoding=""utf-8""?>
 <topic id=""{this.Id ?? "IDNotSet"}"" revisionNumber=""1"">
   <developerConceptualDocument
     xmlns=""http://ddue.schemas.microsoft.com/authoring/2003/5""
     xmlns:xlink=""http://www.w3.org/1999/xlink"">");
-            }
 
             // If there are no headings, we can wrap everything in a single untitled section without an introduction
             if (!document.Any(m => m is HeadingBlock))

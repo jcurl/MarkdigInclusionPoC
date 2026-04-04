@@ -21,10 +21,11 @@
             pipeline.Setup(renderer);
 
             string path = Path.Combine(Deploy.WorkDirectory, "TestResources", "Root.md");
+
+            InclusionFiles.PushFile(path);
             string text = File.ReadAllText(path);
             MarkdownDocument document = MarkdownParser.Parse(text, pipeline);
 
-            InclusionFiles.PushFile(path);
             renderer.Id = "topic-identifier";
             renderer.Render(document);
             renderer.Writer.Flush();

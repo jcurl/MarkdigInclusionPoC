@@ -55,11 +55,10 @@
 
   <ItemGroup>
     <Compile Include="ExtensionsHelper.cs" />
-    <Compile Include="HtmlInclusionBlockRenderer.cs" />
     <Compile Include="InclusionBlock.cs" />
     <Compile Include="InclusionBlockParser.cs" />
+    <Compile Include="InclusionBlockRenderer.cs" />
     <Compile Include="InclusionExtension.cs" />
-    <None Include="InclusionContext.cs" />
     <Compile Include="InclusionFiles.cs" />
     <Compile Include="MamlTopicRenderer.cs" />
     <Compile Include="MarkdownExtensionsTest.cs" />
@@ -71,6 +70,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestResources\Root.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestResources\subdir\common.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

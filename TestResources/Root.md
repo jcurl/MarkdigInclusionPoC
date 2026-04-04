@@ -8,3 +8,5 @@ This is a markdown file.
    1. Sub-item 1.
    2. Sub-item 2.
 2. The second item.
+
+[!INCLUDE [copyright](./subdir/common.md)]

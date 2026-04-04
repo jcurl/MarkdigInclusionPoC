@@ -1,10 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.InteropServices;
-
-namespace RJCP.MarkDigTest
+﻿namespace RJCP.MarkDigTest
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Runtime.InteropServices;
+
+    public struct InclusionFileContext : IDisposable
+    {
+        public InclusionFileContext(string filePath)
+        {
+            FilePath = filePath;
+        }
+
+        public string FilePath { get; }
+
+        public void Dispose() => InclusionFiles.Pop();
+    }
+
     public static class InclusionFiles
     {
         private static readonly HashSet<string> files = new(StringComparer.InvariantCultureIgnoreCase);
@@ -36,7 +48,7 @@ namespace RJCP.MarkDigTest
             return fullPath;
         }
 
-        public static string PushDependency(string fileName)
+        public static InclusionFileContext PushDependency(string fileName)
         {
             if (Path.IsPathFullyQualified(fileName) || Path.IsPathRooted(fileName))
             {
@@ -57,7 +69,7 @@ namespace RJCP.MarkDigTest
 
             stack.Push(newPath);
             files.Add(newPath);
-            return newPath;
+            return new(newPath);
         }
 
         public static void Pop()
